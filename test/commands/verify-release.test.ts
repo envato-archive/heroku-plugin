@@ -18,6 +18,25 @@ describe("verify-release", () => {
       });
   });
 
+  describe("succeeded latest", () => {
+    test
+      .nock("https://api.heroku.com", (api) => {
+        api
+          .get(`/apps/my-app/releases`)
+          .once()
+          .reply(200, [{ version: "latest" }]);
+        api
+          .get(`/apps/my-app/releases/latest`)
+          .once()
+          .reply(200, { status: "succeeded" });
+      })
+      .stdout()
+      .command(["verify-release", "--app", "my-app"])
+      .it("runs verify-release", (ctx) => {
+        expect(ctx.stdout).to.contain("Verified succeeded");
+      });
+  });
+
   describe("pending then succeeded", () => {
     test
       .nock("https://api.heroku.com", (api) => {

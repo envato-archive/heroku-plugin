@@ -3,10 +3,9 @@
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 
 <!-- toc -->
-
-- [heroku](#heroku)
-- [Developing](#developing)
-- [Commands](#commands)
+* [@envato/heroku-plugin](#envatoheroku-plugin)
+* [Developing](#developing)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Developing
@@ -19,19 +18,18 @@ $ heroku verify-release ...
 # Commands
 
 <!-- commands -->
+* [`heroku verify-release [RELEASE]`](#heroku-verify-release-release)
 
-- [`heroku verify-release RELEASE`](#heroku-verify-release-release)
+## `heroku verify-release [RELEASE]`
 
-## `heroku verify-release RELEASE`
-
-Verify a successful release
+Verify a successful release 
 
 ```
 USAGE
-  $ heroku verify-release RELEASE
+  $ heroku verify-release [RELEASE]
 
 ARGUMENTS
-  RELEASE  release number
+  RELEASE  release number (default: latest)
 
 OPTIONS
   --app=app          (required) app name
@@ -43,5 +41,4 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/verify-release.ts](https://github.com/envato/heroku-plugin/blob/v0.0.1/src/commands/verify-release.ts)_
-
 <!-- commandsstop -->
