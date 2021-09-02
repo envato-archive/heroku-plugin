@@ -4,9 +4,19 @@
 
 <!-- toc -->
 * [@envato/heroku-plugin](#envatoheroku-plugin)
+* [Usage](#usage)
 * [Developing](#developing)
 * [Commands](#commands)
 <!-- tocstop -->
+
+# Usage
+
+Install from npmjs.org
+
+```
+$ heroku plugins:install @envato/heroku-plugin
+$ heroku verify-release ...
+```
 
 # Developing
 
