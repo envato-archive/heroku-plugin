@@ -50,5 +50,5 @@ DESCRIPTION
   Exits with a non zero exit code when the release failed
 ```
 
-_See code: [src/commands/verify-release.ts](https://github.com/envato/heroku-plugin/blob/v0.0.2/src/commands/verify-release.ts)_
+_See code: [src/commands/verify-release.ts](https://github.com/envato/heroku-plugin/blob/v0.0.4/src/commands/verify-release.ts)_
 <!-- commandsstop -->
