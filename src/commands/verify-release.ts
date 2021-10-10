@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const { Command, flags } = require("@heroku-cli/command");
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,13 +15,17 @@ class VerifyRelease extends Command {
       release = await this.getLatestRelease(flags.app);
     }
 
-    this.log(`Checking ${flags.app} release ${release}`);
+    this.log(
+      `Checking app ${chalk.cyan(flags.app)} release ${chalk.cyan(
+        `v${String(release).replace("v", "")}`
+      )}`
+    );
 
-    let finalStatus;
+    let releaseInfo;
     let attemptsRemaining = flags.timeout / POLL_INTERVAL;
     while (attemptsRemaining > 0) {
-      finalStatus = await this.getReleaseStatus(flags.app, release);
-      if (finalStatus !== "pending") {
+      releaseInfo = await this.getReleaseInfo(flags.app, release);
+      if (releaseInfo.status !== "pending") {
         break;
       }
 
@@ -28,12 +33,19 @@ class VerifyRelease extends Command {
       await sleep(POLL_INTERVAL);
     }
 
-    if (finalStatus === "succeeded") {
-      this.log("Verified succeeded");
-    } else if (finalStatus === "pending") {
+    if (releaseInfo.status === "succeeded") {
+      this.log(`Release description: "${releaseInfo.description}"`);
+      this.log(
+        chalk.green(
+          `Verified succeeded ${
+            releaseInfo.current ? "(current)" : "(not current)"
+          }`
+        )
+      );
+    } else if (releaseInfo.status === "pending") {
       this.error(`Timed out waiting for heroku API`, { exit: 124 });
     } else {
-      this.error(`Release failed: ${finalStatus}`, { exit: 2 });
+      this.error(`Release failed: ${releaseInfo.status}`, { exit: 2 });
     }
   }
 
@@ -46,12 +58,12 @@ class VerifyRelease extends Command {
     return response.body[0].version;
   }
 
-  async getReleaseStatus(app: string, release: string) {
+  async getReleaseInfo(app: string, release: string) {
     if (release) {
       const response = await this.heroku.get(
         `/apps/${app}/releases/${release}`
       );
-      return response.body.status;
+      return response.body;
     }
   }
 }
