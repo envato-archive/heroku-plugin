@@ -1,6 +1,6 @@
 {
   "name": "@envato/heroku-plugin",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "author": "Glenn Baker @gbakernet",
   "bugs": "https://github.com/envato/heroku-plugin/issues",
   "devDependencies": {

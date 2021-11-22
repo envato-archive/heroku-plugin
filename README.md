@@ -32,7 +32,7 @@ $ heroku verify-release ...
 
 ## `heroku verify-release [RELEASE]`
 
-Verify a successful release 
+Verify a successful release
 
 ```
 USAGE
@@ -43,6 +43,7 @@ ARGUMENTS
 
 OPTIONS
   --app=app          (required) app name
+  --ignore-current   Skip verifying the release is current
   --timeout=timeout  [default: 30000] how long should we poll for
 
 DESCRIPTION
@@ -50,5 +51,5 @@ DESCRIPTION
   Exits with a non zero exit code when the release failed
 ```
 
-_See code: [src/commands/verify-release.ts](https://github.com/envato/heroku-plugin/blob/v0.0.4/src/commands/verify-release.ts)_
+_See code: [src/commands/verify-release.ts](https://github.com/envato/heroku-plugin/blob/v1.0.0/src/commands/verify-release.ts)_
 <!-- commandsstop -->
