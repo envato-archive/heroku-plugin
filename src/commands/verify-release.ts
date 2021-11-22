@@ -35,13 +35,17 @@ class VerifyRelease extends Command {
 
     if (releaseInfo.status === "succeeded") {
       this.log(`Release description: "${releaseInfo.description}"`);
-      this.log(
-        chalk.green(
-          `Verified succeeded ${
-            releaseInfo.current ? "(current)" : "(not current)"
-          }`
-        )
-      );
+      if (!flags["ignore-current"] && !releaseInfo.current) {
+        this.error(`Verification failed, release is not current`, { exit: 3 });
+      } else {
+        this.log(
+          chalk.green(
+            `Verification succeeded ${
+              releaseInfo.current ? "(current)" : "(not current)"
+            }`
+          )
+        );
+      }
     } else if (releaseInfo.status === "pending") {
       this.error(`Timed out waiting for heroku API`, { exit: 124 });
     } else {
@@ -68,7 +72,7 @@ class VerifyRelease extends Command {
   }
 }
 
-VerifyRelease.description = `Verify a successful release 
+VerifyRelease.description = `Verify a successful release
 ...
 Exits with a non zero exit code when the release failed
 `;
@@ -77,6 +81,10 @@ VerifyRelease.flags = {
   app: flags.string({
     required: true,
     description: "app name",
+  }),
+  "ignore-current": flags.boolean({
+    description: "Skip verifying the release is current",
+    default: false,
   }),
   timeout: flags.string({
     description: "how long should we poll for",
