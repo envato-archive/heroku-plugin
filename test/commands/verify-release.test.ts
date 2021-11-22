@@ -22,11 +22,11 @@ describe("verify-release", () => {
       .stdout()
       .command(["verify-release", "v1", "--app", "my-app"])
       .it("runs verify-release", (ctx) => {
-        expect(ctx.stdout).to.contain("Verified succeeded (current)");
+        expect(ctx.stdout).to.contain("Verification succeeded (current)");
       });
   });
 
-  describe("succeeded not current", () => {
+  describe("failed not current", () => {
     test
       .nock("https://api.heroku.com", (api) =>
         api
@@ -46,8 +46,32 @@ describe("verify-release", () => {
       )
       .stdout()
       .command(["verify-release", "v1", "--app", "my-app"])
+      .exit(3)
+      .it("exits with status 3");
+  });
+
+  describe("succeeded ignoring not current", () => {
+    test
+      .nock("https://api.heroku.com", (api) =>
+        api
+          .get(`/apps/my-app/releases/v1`)
+          .once()
+          .reply(() => {
+            return [
+              200,
+              {
+                status: "succeeded",
+                description: "Deployed",
+                version: 1,
+                current: false,
+              },
+            ];
+          })
+      )
+      .stdout()
+      .command(["verify-release", "v1", "--app", "my-app", "--ignore-current"])
       .it("runs verify-release", (ctx) => {
-        expect(ctx.stdout).to.contain("Verified succeeded (not current)");
+        expect(ctx.stdout).to.contain("Verification succeeded (not current)");
       });
   });
 
@@ -68,7 +92,7 @@ describe("verify-release", () => {
       .stdout()
       .command(["verify-release", "--app", "my-app"])
       .it("runs verify-release", (ctx) => {
-        expect(ctx.stdout).to.contain("Verified succeeded (current)");
+        expect(ctx.stdout).to.contain("Verification succeeded (current)");
       });
   });
 
@@ -82,12 +106,12 @@ describe("verify-release", () => {
         api
           .get(`/apps/my-app/releases/v1`)
           .once()
-          .reply(200, { status: "succeeded" });
+          .reply(200, { status: "succeeded", current: true });
       })
       .stdout()
       .command(["verify-release", "v1", "--app", "my-app"])
       .it("runs verify-release", (ctx) => {
-        expect(ctx.stdout).to.contain("Verified succeeded");
+        expect(ctx.stdout).to.contain("Verification succeeded");
       });
   });
 
