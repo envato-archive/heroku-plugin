@@ -25,6 +25,10 @@ $ heroku plugins:link
 $ heroku verify-release ...
 ```
 
+# Publishing
+
+See https://docs.envato.net/elements/#/Releasing-@envato-heroku-plugin
+
 # Commands
 
 <!-- commands -->
