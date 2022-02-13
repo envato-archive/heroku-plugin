@@ -1,3 +1,5 @@
+Replaced the function in this plugin with https://github.com/envato/heroku-container-deploy-buildkite-plugin
+
 # @envato/heroku-plugin
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
